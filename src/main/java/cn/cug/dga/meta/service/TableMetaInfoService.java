@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TableMetaInfoService extends IService<TableMetaInfo> {
 
+    void initMetaInfoTables(String schemaName, String assessDate) throws Exception;
 }

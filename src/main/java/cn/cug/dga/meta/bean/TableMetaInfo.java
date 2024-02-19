@@ -89,7 +89,7 @@ public class TableMetaInfo implements Serializable {
     /**
      * 表创建时间 ( 来源:hive)
      */
-    private String tableCreateTime;
+    private Timestamp tableCreateTime;
 
     /**
      * 表类型 ( 来源:hive)
@@ -114,22 +114,22 @@ public class TableMetaInfo implements Serializable {
     /**
      * 数据量大小 ( 来源:hdfs)
      */
-    private Long tableSize;
+    private Long tableSize = 0L;
 
     /**
      * 所有副本数据总量大小  ( 来源:hdfs)
      */
-    private Long tableTotalSize;
+    private Long tableTotalSize = 0L;
 
     /**
      * 最后修改时间   ( 来源:hdfs)
      */
-    private Timestamp tableLastModifyTime;
+    private Timestamp tableLastModifyTime = new Timestamp(0);
 
     /**
      * 最后访问时间   ( 来源:hdfs)
      */
-    private Timestamp tableLastAccessTime;
+    private Timestamp tableLastAccessTime = new Timestamp(0);
 
     /**
      * 当前文件系统容量   ( 来源:hdfs)
