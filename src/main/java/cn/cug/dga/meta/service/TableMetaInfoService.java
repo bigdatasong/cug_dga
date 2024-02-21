@@ -26,4 +26,6 @@ public interface TableMetaInfoService extends IService<TableMetaInfo> {
     int queryPageDataForNum(TableMetaInfoForQuery tableMetaInfoForQuery);
 
 
+    //单表详细信息查询
+    TableMetaInfo tableDetailByid(String tableId);
 }

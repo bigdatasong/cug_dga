@@ -1,9 +1,11 @@
 package cn.cug.dga.meta.service.impl;
 
 import cn.cug.dga.meta.bean.TableMetaInfo;
+import cn.cug.dga.meta.bean.TableMetaInfoExtra;
 import cn.cug.dga.meta.bean.TableMetaInfoForQuery;
 import cn.cug.dga.meta.bean.TableMetaInfoPageVo;
 import cn.cug.dga.meta.mapper.TableMetaInfoMapper;
+import cn.cug.dga.meta.service.TableMetaInfoExtraService;
 import cn.cug.dga.meta.service.TableMetaInfoService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
@@ -45,6 +47,11 @@ public class TableMetaInfoServiceImpl extends ServiceImpl<TableMetaInfoMapper, T
     //1、手动更新元数据
     @Autowired
     private HiveMetaStoreClient hiveMetaStoreClient;  //并且这种方式还是所有方法公用这个客户端对象
+
+    //需要用到extraservice的方法
+    @Autowired
+    private TableMetaInfoExtraService tableMetaInfoExtraService;
+
     @Override
     public void initMetaInfoTables(String schemaName, String assessDate) throws Exception {
         //每次点击手动更新时，为保证幂等性，即用户可能多次点击更新元数据，为了保证每次执行结果不重复，可以先去根据指定日期以及指定库来查询元数据是否存在，
@@ -205,5 +212,21 @@ public class TableMetaInfoServiceImpl extends ServiceImpl<TableMetaInfoMapper, T
         int i = this.baseMapper.queryPageDataForNum(tableMetaInfoForQuery);
 
         return i ;
+    }
+
+    //单表数据详细查询其中包括辅助信息，用于表数据回显的接口需求
+    @Override
+    public TableMetaInfo tableDetailByid(String tableId) {
+
+        //根据id查询tablemetainfo
+        //然后根据表名和库名 查询表的辅助信息
+        //将辅助信息bean封装到tablemetainfo中
+        TableMetaInfo metaInfo = this.getById(tableId);
+
+        TableMetaInfoExtra metaInfoExtraServiceOne = tableMetaInfoExtraService.getOne(new QueryWrapper<TableMetaInfoExtra>().eq("schema_name", metaInfo.getSchemaName()).eq("table_name", metaInfo.getTableName()));
+
+        metaInfo.setTableMetaInfoExtra(metaInfoExtraServiceOne);
+
+        return metaInfo;
     }
 }

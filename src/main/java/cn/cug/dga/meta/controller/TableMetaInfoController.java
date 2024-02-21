@@ -1,14 +1,18 @@
 package cn.cug.dga.meta.controller;
 
+import cn.cug.dga.meta.bean.TableMetaInfo;
+import cn.cug.dga.meta.bean.TableMetaInfoExtra;
 import cn.cug.dga.meta.bean.TableMetaInfoForQuery;
 import cn.cug.dga.meta.bean.TableMetaInfoPageVo;
 import cn.cug.dga.meta.service.TableMetaInfoExtraService;
 import cn.cug.dga.meta.service.TableMetaInfoService;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.script.ScriptContext;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -68,6 +72,36 @@ public class TableMetaInfoController {
         return jsonObject;
     }
 
+    /*
+    /tableMetaInfo/table/{tableMetaInfoId}
+GET
+请求路径中的tableMetaInfoId
+     */
+    //处理单表信息详情处理 参数是id 并且参数在路径上 所以需要用pathvariable
+    @GetMapping("/table/{tableMetaInfoId}")
+    public String tableDetailByid(@PathVariable("tableMetaInfoId") String tableId){
+
+        //虽然service层已经有确定的方法 但是我们还是尽量将和数据库的交互的代码放在serivce层中
+        //返回值类型就直接是tablemetainfo 需要将辅助信息的bean添加到info 的bean中，并且排除
+
+        TableMetaInfo tableMetaInfo = tableMetaInfoService.tableDetailByid(tableId);
+
+        return JSON.toJSONString(tableMetaInfo);
+
+    }
+
+    //定义接口 用户辅助信息接口的保存
+
+    @PostMapping("/tableExtra")
+    public String updateTableExtra(@RequestBody TableMetaInfoExtra tableMetaInfoExtra){
+
+        // 因为更新了所以时间需要变化
+        tableMetaInfoExtra.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        tableMetaInfoExtraService.saveOrUpdate(tableMetaInfoExtra);
+
+        return "success";
+
+    }
 
 
 }
