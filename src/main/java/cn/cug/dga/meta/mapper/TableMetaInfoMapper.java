@@ -1,8 +1,12 @@
 package cn.cug.dga.meta.mapper;
 
 import cn.cug.dga.meta.bean.TableMetaInfo;
+import cn.cug.dga.meta.bean.TableMetaInfoForQuery;
+import cn.cug.dga.meta.bean.TableMetaInfoPageVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +18,12 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface TableMetaInfoMapper extends BaseMapper<TableMetaInfo> {
+
+
+    //定义一个方法实现分页查询结果
+    List<TableMetaInfoPageVo> queryPageDataForTables(TableMetaInfoForQuery tableMetaInfoForQuery);
+
+    //定义方法实现符合条件查询的分页数据总数的返回
+    int queryPageDataForNum(TableMetaInfoForQuery tableMetaInfoForQuery);
 
 }

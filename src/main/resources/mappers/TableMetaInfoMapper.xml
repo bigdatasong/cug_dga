@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+   namespace:  名称空间，类似包名。
+        必须和对应的接口的全类名一致
+-->
+<mapper namespace="cn.cug.dga.meta.mapper.TableMetaInfoMapper">
+
+<!--    分页数据查询-->
+    <select id="queryPageDataForTables" resultType="cn.cug.dga.meta.bean.TableMetaInfoPageVo">
+        <include refid="queryPage"/>
+        <where>
+            <if test="schemaName != null and schemaName != '' ">
+                and t1.schema_name = #{schemaName}
+            </if>
+            <if test="tableName != null and tableName != '' ">
+                and t1.table_name like concat('%',#{tableName},'%')
+            </if>
+            <if test="dwLevel != null and dwLevel != '' ">
+                and t2.dw_level = #{dwLevel}
+            </if>
+                and t1.assess_date = (select max(assess_date) from table_meta_info)
+        </where>
+        order by id
+        limit ${(pageNo - 1) * pageSize},#{pageSize}
+
+    </select>
+
+<!--    分页数据查询总条数  基本类型的返回mybaits中有基本的变量名称-->
+    <select id="queryPageDataForNum" resultType="int">
+        select
+            count(*)
+        from (
+            <include refid="queryPage"/>
+        <where>
+            <if test="schemaName != null and schemaName != '' ">
+                and t1.schema_name = #{schemaName}
+            </if>
+            <if test="tableName != null and tableName != '' ">
+                and t1.table_name like concat('%',#{tableName},'%')
+            </if>
+            <if test="dwLevel != null and dwLevel != '' ">
+                and t2.dw_level = #{dwLevel}
+            </if>
+            and t1.assess_date = (select max(assess_date) from table_meta_info)
+        </where>
+             ) t3
+    </select>
+
+<!--    //总数查询 对于基本的数据类型， mybatis中有基本的变量名称-->
+<!--    <select id="queryPageDataForNum" resultType="int">-->
+
+<!--    </select>-->
+
+<!--定义一个sql片段-->
+    <sql id="queryPage">
+        select
+            t1.id,
+            t1.table_name,
+            t1.schema_name,
+            t1.table_size,
+            t1.table_total_size,
+            t1.table_comment,
+            t2.tec_owner_user_name,
+            t2.busi_owner_user_name,
+            t1.table_last_modify_time,
+            t1.table_last_access_time
+
+        from table_meta_info t1
+                 join table_meta_info_extra t2
+                      on t1.schema_name = t2.schema_name and t1.table_name = t2.table_name
+
+    </sql>
+
+</mapper>

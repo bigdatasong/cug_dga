@@ -36,8 +36,8 @@ mybatis-plus:
 #日志级别从低到高: trace debug info warn error fatal
 logging:
   level:
-    com:
-      atguigu:
+    cn:
+      cug:
         dga:
           assess:
             mapper: debug

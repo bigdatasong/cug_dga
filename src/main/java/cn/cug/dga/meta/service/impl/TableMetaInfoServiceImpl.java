@@ -1,6 +1,8 @@
 package cn.cug.dga.meta.service.impl;
 
 import cn.cug.dga.meta.bean.TableMetaInfo;
+import cn.cug.dga.meta.bean.TableMetaInfoForQuery;
+import cn.cug.dga.meta.bean.TableMetaInfoPageVo;
 import cn.cug.dga.meta.mapper.TableMetaInfoMapper;
 import cn.cug.dga.meta.service.TableMetaInfoService;
 import com.alibaba.fastjson.JSON;
@@ -183,10 +185,25 @@ public class TableMetaInfoServiceImpl extends ServiceImpl<TableMetaInfoMapper, T
             tableMetaInfo.setTableSortColsJson(JSON.toJSONString(tableMeta.getSd().getSortCols()));
 
         }
-
-
-
-
         return tableMetaInfo;
+    }
+
+    //获取分页列表信息
+    @Override
+    public List<TableMetaInfoPageVo> queryPageDataForTables(TableMetaInfoForQuery tableMetaInfoForQuery) {
+
+        // 由于需要从两张表中查询数据，所以需要自己写sql，所以也需要在mapper层定义方法
+        List<TableMetaInfoPageVo> tableMetaInfoPageVos = this.baseMapper.queryPageDataForTables(tableMetaInfoForQuery);
+
+        return tableMetaInfoPageVos;
+    }
+
+    //获取分页列表信息总数
+    @Override
+    public int queryPageDataForNum(TableMetaInfoForQuery tableMetaInfoForQuery) {
+
+        int i = this.baseMapper.queryPageDataForNum(tableMetaInfoForQuery);
+
+        return i ;
     }
 }
