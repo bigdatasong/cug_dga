@@ -1,11 +1,12 @@
 package cn.cug.dga;
 
+
+import cn.cug.dga.meta.bean.TableMetaInfo;
 import cn.cug.dga.meta.bean.TableMetaInfoForQuery;
 import cn.cug.dga.meta.bean.TableMetaInfoPageVo;
 import cn.cug.dga.meta.mapper.TableMetaInfoMapper;
 import cn.cug.dga.meta.service.TableMetaInfoService;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
-import org.apache.thrift.TException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-class CugDgaApplicationTests {
+public class CugDgaApplicationTests {
 
     @Autowired
     private HiveMetaStoreClient hiveMetaStoreClient;
@@ -64,6 +65,14 @@ class CugDgaApplicationTests {
 
         System.out.println(i);
 
+    }
+
+    //测试一下根据库名以及考评时间 来查询表的元数据信息
+    @Test
+    public void testquerytableinfoBydate(){
+        List<TableMetaInfo> tableMetaInfoList = tableMetaInfoMapper.queryMetaInfoBydate("gmall", "2023-08-22");
+
+        System.out.println(tableMetaInfoList);
     }
 
 }

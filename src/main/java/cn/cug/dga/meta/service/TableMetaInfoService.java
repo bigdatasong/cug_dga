@@ -28,4 +28,10 @@ public interface TableMetaInfoService extends IService<TableMetaInfo> {
 
     //单表详细信息查询
     TableMetaInfo tableDetailByid(String tableId);
+
+    //定义一个方法实现元数据表的查询，根据库名和考评时间来查 因为考评是每天考评一次 并且可能数据中我们有时候只需要考评某个数据库下的
+    //返回值还是tablemetainfo的list因为里面封装了extra的属性
+
+    List<TableMetaInfo> queryMetainfoBydate(String schemaName,String asscessDate);
+
 }

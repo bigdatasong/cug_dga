@@ -5,6 +5,7 @@ import cn.cug.dga.meta.bean.TableMetaInfoForQuery;
 import cn.cug.dga.meta.bean.TableMetaInfoPageVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface TableMetaInfoMapper extends BaseMapper<TableMetaInfo> {
 
     //定义方法实现符合条件查询的分页数据总数的返回
     int queryPageDataForNum(TableMetaInfoForQuery tableMetaInfoForQuery);
+
+    List<TableMetaInfo> queryMetaInfoBydate(@Param("db") String schemaName, @Param("dt") String assessDate);
 
 }

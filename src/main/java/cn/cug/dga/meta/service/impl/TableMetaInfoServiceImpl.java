@@ -229,4 +229,20 @@ public class TableMetaInfoServiceImpl extends ServiceImpl<TableMetaInfoMapper, T
 
         return metaInfo;
     }
+
+    /**
+     *  根据库名以及考评时间查询元数据表信息
+     *  实现思路，我们可以说用双层for循环去封装，但是和数据库交互时间过多不利于。所以不妨自己写sql来实现一次交互完成结果的封装
+     * @param schemaName
+     * @param asscessDate
+     * @return
+     */
+    @Override
+    public List<TableMetaInfo> queryMetainfoBydate(String schemaName, String asscessDate) {
+
+        List<TableMetaInfo> tableMetaInfoList = baseMapper.queryMetaInfoBydate(schemaName, asscessDate);
+
+
+        return tableMetaInfoList;
+    }
 }

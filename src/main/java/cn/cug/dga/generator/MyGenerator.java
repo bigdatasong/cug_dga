@@ -21,7 +21,7 @@ public class MyGenerator
 
 
         //指定为哪些表生成
-        String[] tables={"table_meta_info_extra"};
+        String[] tables={"governance_assess_detail","governance_metric"};
 
         FastAutoGenerator.create("jdbc:mysql://hadoop102:3306/cug_dga","root","000000")
                          .globalConfig(builder -> {
@@ -32,7 +32,7 @@ public class MyGenerator
                          })
                          .packageConfig(builder -> {                 //各个package 名称
                              builder.parent("cn.cug.dga")
-                                    .moduleName("meta")
+                                    .moduleName("access")
                                     //下面全是父包下的包名
                                     .entity("bean")
                                     .service("service")
