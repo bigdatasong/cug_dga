@@ -9,9 +9,15 @@ import cn.cug.dga.meta.service.TableMetaInfoService;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 public class CugDgaApplicationTests {
@@ -73,6 +79,34 @@ public class CugDgaApplicationTests {
         List<TableMetaInfo> tableMetaInfoList = tableMetaInfoMapper.queryMetaInfoBydate("gmall", "2023-08-22");
 
         System.out.println(tableMetaInfoList);
+    }
+
+
+    @Test
+    public void test1(){
+
+        // 将表元数据信息list封装成map
+//        List<TableMetaInfo> tableMetaInfoList = tableMetaInfoService.queryMetainfoBydate("gmall", "2023-08-22");
+//
+//        Map<String, TableMetaInfo> collect = tableMetaInfoList.stream()
+//                .collect(Collectors.toMap(
+//                        t -> t.getSchemaName() + "_" + t.getTableName(),
+//                        v -> v
+//                ));
+//
+//
+//
+//        collect.forEach((t,q) -> System.out.println(t + q));
+//
+//
+//        Map<String, TableMetaInfo> collect = tableMetaInfoList.stream()
+//                .collect(Collectors.toMap(
+//                        t -> t.getSchemaName() + '.' + t.getTableName(),
+//                        Function.identity()
+//                ));
+//
+//        collect.forEach((k,v) -> System.out.println(k + v));
+
     }
 
 }

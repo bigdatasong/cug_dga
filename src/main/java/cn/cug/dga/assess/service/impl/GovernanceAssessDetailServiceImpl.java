@@ -9,6 +9,7 @@ import cn.cug.dga.assess.service.GovernanceMetricService;
 import cn.cug.dga.meta.bean.TableMetaInfo;
 import cn.cug.dga.meta.service.TableMetaInfoService;
 import cn.cug.dga.utils.AssessParam;
+import cn.cug.dga.utils.MetaUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.esri.core.geometry.ogc.OGCConcreteGeometryCollection;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -40,11 +44,28 @@ public class GovernanceAssessDetailServiceImpl extends ServiceImpl<GovernanceAss
 
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private MetaUtil metaUtil;
     @Override
     public void assessFordate(String schemaName,String accessDate) {
 
         // 考评前需要先获取源数据表数据
         List<TableMetaInfo> tableMetaInfoList = tableMetaInfoService.queryMetainfoBydate(schemaName, accessDate);
+
+        //为了后续需要这个所有表的元数据信息 在这里查出来的元数据信息封装成一个map
+        // 定义一个工具类 在工具类中来new hashmap
+        //可以使用传统的遍历方式 一个一个将k和v put进去
+        //也可以使用stream流的方式
+        //在存入之前 先清空
+        metaUtil.getTableMetaInfoMap().clear();
+        Map<String, TableMetaInfo> map = tableMetaInfoList.stream().collect(
+                Collectors.toMap(
+                        tablemeta -> tablemeta.getSchemaName() + '.' + tablemeta.getTableName(),
+                        Function.identity()
+                )
+        );
+        metaUtil.setTableMetaInfoMap(map);
 
         //获取所有指标 需要那些未禁用的指标
         List<GovernanceMetric> governanceMetrics = governanceMetricService.list(new QueryWrapper<GovernanceMetric>().eq("is_disabled", "否"));

@@ -7,6 +7,7 @@ import org.datanucleus.store.rdbms.mapping.java.BooleanMapping;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 
 /**
  * author song
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 public abstract class AssessTemplate {
 
     //在抽象类中定义一个抽象方法 使得子类必须实现该方法 从而实现核心步骤
-    protected abstract void assess(AssessParam assessParam,GovernanceAssessDetail assessDetail);
+    protected abstract void assess(AssessParam assessParam,GovernanceAssessDetail assessDetail) throws Exception;
 
     //以为父类必须做一些公共的事情 所以 也要一个公共方法 ,然后我在外面调用的时候只调用这个公共方法就能实现逻辑,所以我在
     //这个公共方法 调用抽象方法 ,这样的话就可以使得子类调用自己实现的方法
