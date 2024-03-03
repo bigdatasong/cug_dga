@@ -1,6 +1,7 @@
 package cn.cug.dga.ds.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -24,6 +25,9 @@ import lombok.NoArgsConstructor;
 public class TDsTaskInstance implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @TableField(exist = false)
+    private String sql ;  //每个taskintance都带有sql
 
     /**
      * key

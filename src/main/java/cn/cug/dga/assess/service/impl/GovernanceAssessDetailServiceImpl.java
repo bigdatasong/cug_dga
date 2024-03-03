@@ -6,6 +6,8 @@ import cn.cug.dga.assess.bean.GovernanceMetric;
 import cn.cug.dga.assess.mapper.GovernanceAssessDetailMapper;
 import cn.cug.dga.assess.service.GovernanceAssessDetailService;
 import cn.cug.dga.assess.service.GovernanceMetricService;
+import cn.cug.dga.ds.bean.TDsTaskInstance;
+import cn.cug.dga.ds.service.TDsTaskInstanceService;
 import cn.cug.dga.meta.bean.TableMetaInfo;
 import cn.cug.dga.meta.service.TableMetaInfoService;
 import cn.cug.dga.utils.AssessParam;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,9 @@ public class GovernanceAssessDetailServiceImpl extends ServiceImpl<GovernanceAss
 
     @Autowired
     private MetaUtil metaUtil;
+
+    @Autowired
+    private TDsTaskInstanceService tDsTaskInstanceService;
     @Override
     public void assessFordate(String schemaName,String accessDate) {
 
@@ -66,6 +72,25 @@ public class GovernanceAssessDetailServiceImpl extends ServiceImpl<GovernanceAss
                 )
         );
         metaUtil.setTableMetaInfoMap(map);
+
+        Set<String> strings = metaUtil.getTableMetaInfoMap().keySet();
+
+        // 同样我们在这将所有taskinstance表查出来封  装在utils中 并且这个taskinstance中有专门的字段表示sql
+        //那我们就需要taskinstanceserivce中编写方法 封装出所有的包含sql的taskinstance
+        //所需参数应该要有一个表示库名加表名的字段 因为我们在之前的metautil中已经封装了每个库和表 对应的tablemetainfo信息
+        //所以他的key的组合就是库名加表名的集合
+        List<TDsTaskInstance> allTdsTaskInstance = tDsTaskInstanceService.getAllTdsTaskInstance(accessDate, strings);
+
+        //将其封装到metautil中
+        Map<String, TDsTaskInstance> collect = allTdsTaskInstance.stream().collect(
+                Collectors.toMap(
+                        task -> task.getName(),
+                        Function.identity()
+                )
+        );
+
+        metaUtil.setTDsTaskInstanceMap(collect);
+
 
         //获取所有指标 需要那些未禁用的指标
         List<GovernanceMetric> governanceMetrics = governanceMetricService.list(new QueryWrapper<GovernanceMetric>().eq("is_disabled", "否"));

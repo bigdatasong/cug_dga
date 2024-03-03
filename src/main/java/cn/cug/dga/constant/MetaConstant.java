@@ -40,5 +40,8 @@ public interface MetaConstant
     String GMALL_ADS_REGEX = "^ads_\\w+$"; //下面两个都是表示以任意多少个字符结尾都可以
     String GMALL_DM_REGEX = "^dm_\\w+$";
 
+    Integer TASK_STATE_SUCCESS = 7;
+    Integer TASK_STATE_FAILD = 6;
+
 
 }

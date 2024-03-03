@@ -47,7 +47,7 @@ public class CheckTaskFailed extends AssessTemplate {
         //根据 实例名称以及考评时间来查询得到当前表对应的任务实例
         //查询出当天任务失败的对应当前表的任务实例
             QueryWrapper<TDsTaskInstance> wrapper = new QueryWrapper<TDsTaskInstance>().eq("name", instanceName).eq("date(start_time)", assessDate)
-                .eq("status", 6);
+                .eq("state", MetaConstant.TASK_STATE_FAILD);
 
         // 因为同一天的时候可能会运行同一个实例多次 所以在这个表中就会记录这个实例多次的信息 这些信息也是对应的当前表的 所以需要查出来
         List<TDsTaskInstance> tDsTaskInstances = tDsTaskInstanceService.list(wrapper);

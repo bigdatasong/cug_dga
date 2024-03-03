@@ -1,5 +1,6 @@
 package cn.cug.dga.utils;
 
+import cn.cug.dga.ds.bean.TDsTaskInstance;
 import cn.cug.dga.meta.bean.TableMetaInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +22,6 @@ import java.util.Map;
 public class MetaUtil {
 
     private   Map<String, TableMetaInfo> tableMetaInfoMap = new HashMap<>();
+
+    private  Map<String, TDsTaskInstance> tDsTaskInstanceMap = new HashMap<>();
 }
